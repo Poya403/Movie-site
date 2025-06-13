@@ -52,7 +52,7 @@ export default {
     <h1 id="title">فیلم برتر</h1>
     <input id="search" v-model="searchTerm" @input="searchInputHandler" placeholder="جستجوی فیلم">
     <router-link to="/">
-      <button>بازگشت</button>
+      <button>ورود</button>
     </router-link>
   </nav>
   <section id="movies">
