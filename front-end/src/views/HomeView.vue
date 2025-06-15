@@ -9,6 +9,7 @@ export default {
     const genres = ref([]);
     const searchResults = ref([]);
     const searchTerm = ref(null);
+    const username = ref(null);
     const router = useRouter();
     const fetchMovies = async () => {
       try {
@@ -33,7 +34,14 @@ export default {
     const goToMovie = (movieId) => {
       router.push(`/movies/${movieId}`);
     };
-    onMounted(fetchMovies);
+    const logout = () => {
+      localStorage.removeItem('username');
+      router.push('/');
+    };
+    onMounted(() => {
+      username.value = localStorage.getItem('username') || 'کاربر';
+      fetchMovies();
+    });
 
     return {
       movies,
@@ -41,7 +49,9 @@ export default {
       searchResults,
       searchTerm,
       searchInputHandler,
-      goToMovie
+      goToMovie,
+      username,
+      logout
     };
   }
 };
@@ -51,13 +61,25 @@ export default {
   <nav>
     <h1 id="title">فیلم برتر</h1>
     <input id="search" v-model="searchTerm" @input="searchInputHandler" placeholder="جستجوی فیلم">
-    <router-link to="/">
-      <button>ورود</button>
-    </router-link>
-  </nav>
+    <section id="Registration status">
+        <div v-show="!username">
+          <router-link to="/">
+            <button>ورود <i class="material-icons">login</i></button>
+          </router-link>
+        </div>
+        <div v-show="username" class="profile-box">
+          <h1 class="profile-name">{{ username }}
+          <i class="material-icons">account_circle</i>
+          </h1>
+          <button type="button" @click="logout">
+            <i class="material-icons">logout</i>
+        </button>
+        </div>
+    </section>
+  </nav><br><br>
   <section id="movies">
     <div v-for="genre in genres" :key="genre.id" class="genre-section">
-      <h2 v-if="searchResults.filter(movie => movie.gname === genre.gname).length>0">{{ genre.gname }}</h2>
+      <h2 id="genreTitle" v-if="searchResults.filter(movie => movie.gname === genre.gname).length>0">{{ genre.gname }}</h2>
       <div class="movies-container">
           <div v-for="movie in searchResults.filter(movie => movie.gname === genre.gname)"
             :key="movie.img_url" class="movie-card" @click="goToMovie(movie.mid)">
@@ -70,13 +92,19 @@ export default {
 </template>
 
 <style>
+*{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+#movies{
+  margin-top: 15px;
+}
 .movies-container {
   display: flex;
   flex-wrap: wrap;
-  justify-self: end;
   gap: 10px;
-  justify-content: center;
+  justify-content: right;
   padding: 20px;
+  margin-top: 10px;
 }
 
 .movie-card {
@@ -90,7 +118,7 @@ export default {
 }
 
 .movie-card:hover {
-  transform: scale(1.05);
+  transform: scale(1.10);
 }
 
 .movie-card img {
@@ -104,33 +132,57 @@ export default {
   color: white;
   font-size: 16px;
   margin-top: 10px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 input{
   width: 30%;
   display: grid;
-  direction: rtl;
-  justify-self: end;
-  margin: auto;
+  margin-bottom: 30px;
   padding: 7px;
-  border-radius: 5px ;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-h1,h2{
-  justify-self: end;
-  direction: rtl;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 5px;
 }
 
 #title,#search{
-    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
     float: right;
-    vertical-align: center;
-    margin-bottom: 20px;
 }
+
 #search{
-    margin: 10px 50px 0;
+    margin: 5px 50px 0;
 }
+
+.profile-box {
+  direction: ltr;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #1e1f22, #2d2e33);
+  color: #f0f0f0;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.profile-name {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  text-shadow: 0 0 3px #00000044;
+}
+
+.profile-box .material-icons {
+  font-size: 28px;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.3s;
+}
+
+.profile-box .material-icons:hover {
+  transform: scale(1.1);
+  color: #66ccff;
+}
+
 </style>

@@ -5,6 +5,7 @@
   margin: 0 auto;
   padding: 2rem;
   font-weight: normal;
+  direction: rtl;
 }
 
 a,
@@ -26,11 +27,25 @@ a,
     display: flex;
     place-items: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    direction: rtl;
   }
 
   #app {
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
+    direction: rtl;
   }
+}
+
+button{
+  display: flex;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  background-color: blueviolet;
+  border-radius: 5px;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  justify-self: end;
 }

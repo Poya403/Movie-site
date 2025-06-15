@@ -50,7 +50,8 @@ app.get('/movies', (req, res) => {
 
 app.get('/movies/:id', (req, res) => {
   const movieId = req.params.id;
-  const query = `
+
+  const movieQuery = `
     SELECT m.mid, m.mname, m.title, m.initial_release, m.rate, 
            GROUP_CONCAT(g.gname SEPARATOR ' - ') AS genres, 
            d.dname, mi.img_url
@@ -63,15 +64,60 @@ app.get('/movies/:id', (req, res) => {
     GROUP BY m.mid, m.mname, m.title, m.initial_release, d.dname, mi.img_url;
   `;
 
-  db.query(query, [movieId], (err, results) => {
+  const castQuery = `
+    SELECT a.aname, mc.role_in_movie
+    FROM actors a
+    JOIN movies_cast mc ON a.aid = mc.aid
+    WHERE mc.mid = ?;
+  `;
+
+  db.query(movieQuery, [movieId], (err, movieResults) => {
     if (err) {
       console.error("Query error:", err);
       return res.status(500).json({ error: err });
     }
-    if (results.length === 0) {
+    if (movieResults.length === 0) {
       return res.status(404).json({ message: "Movie not found" });
     }
-    res.json({ movieInfo: results[0] });
+
+    db.query(castQuery, [movieId], (err, castResults) => {
+      if (err) {
+        console.error("Query error:", err);
+        return res.status(500).json({ error: err });
+      }
+
+      res.json({
+        movieInfo: movieResults[0],
+        cast: castResults
+      });
+    });
+  });
+});
+
+app.post('/register', async (req, res) => {
+  const { uname, password } = req.body;
+
+  const query = "INSERT INTO users (uname, password) VALUES (?, ?)";
+  db.query(query, [uname, password], (err, result) => {
+    if (err) {
+      console.error("خطا در ثبت‌نام:", err);
+      return res.status(500).json({ error: err });
+    }
+    res.json({ message: "successfully registered!", uid: result.insertId });
+  });
+});
+
+app.post('/login', async (req, res) => {
+  const { uname, password } = req.body;
+
+  db.query("SELECT * FROM users WHERE uname = ?", [uname], async (err, results) => {
+    if (err || results.length === 0) { return res.status(401).json({ message: "نام کاربری یا رمز عبور اشتباه است" });}
+
+    const user = results[0];
+
+    if (password !== user.password) { return res.status(401).json({ message: "رمز عبور اشتباه است" });}
+
+    res.json({ message: "successfully login!" });
   });
 });
 
