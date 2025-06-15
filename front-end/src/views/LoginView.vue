@@ -36,7 +36,7 @@ export default {
 
       } catch (error) {
         console.error("خطا:", error);
-        alert("خطایی در ارتباط با سرور رخ داده است.");
+        alert("نام کاربری یا کلمه عبور اشتباه وارد شده.");
       }
     },
   },
