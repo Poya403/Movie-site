@@ -99,6 +99,25 @@ export default{
 <style>
 *{
   direction: rtl;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  table, th, td {
+    background-color: #2c2c2c;
+    color: #fff;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  table, th, td {
+    background-color: #f9f9f9;
+    color: #222;
+  }
+
+  th {
+    background-color: #4CAF50;
+    color: white;
+  }
 }
 @media (max-width: 600px) {
   .movie_info{
@@ -117,19 +136,15 @@ export default{
     width: 100%;
     border-collapse: collapse;
     font-size: 12px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: right;
   }
 
   th, td {
     padding: 5px;
     border: 1px solid #ddd;
-    color: white;
   }
 
   th {
-    background-color: #4CAF50;
-    color: white;
     text-transform: uppercase;
   }
 }
@@ -156,19 +171,15 @@ export default{
     width: 50%;
     border-collapse: collapse;
     font-size: 12px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: right;
   }
 
   th, td {
     padding: 5px;
     border: 1px solid #ddd;
-    color: white;
   }
 
   th {
-    background-color: #4CAF50;
-    color: white;
     text-transform: uppercase;
   }
 }
