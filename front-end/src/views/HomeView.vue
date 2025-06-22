@@ -117,10 +117,11 @@ export default {
 
 .movie-card {
   background: linear-gradient(90deg,rgb(29, 4, 140),rgb(75, 8, 122));
-  width: 250px;
+  width: 200px;
   padding: 10px;
   border-radius: 12px;
   text-align: center;
+  margin-right: 10px ;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
   transition: transform 0.1s ease;
 }
@@ -151,11 +152,11 @@ input{
 }
 
 #title{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    float: right;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  float: right;
 }
 
 #search {
@@ -173,4 +174,21 @@ input{
   color: #cccccce6;
 }
 
+@media(max-width: 600px) {
+  .movie-card{
+    width: 150px;
+    height: 200px;
+  }
+  .movie-card img {
+    width: 100px;
+    height: 140px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .movie-card h3 {
+    color: white;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+}
 </style>

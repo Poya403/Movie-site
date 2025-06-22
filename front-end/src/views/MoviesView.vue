@@ -119,33 +119,19 @@ export default{
     color: white;
   }
 }
+
 @media (max-width: 600px) {
   .movie_info{
-    text-align: right;
     padding: 5vh;
+    font-size: 12px;
   }
-  .movie_info img{
-    display: inline-block;
-    width: 100%;
-    height: 50vh;
-    object-fit: cover;
-    border-radius: 10px;
-  }
+
   table {
     margin-top: 20px;
     width: 100%;
     border-collapse: collapse;
-    font-size: 12px;
+    font-size: 10px;
     text-align: right;
-  }
-
-  th, td {
-    padding: 5px;
-    border: 1px solid #ddd;
-  }
-
-  th {
-    text-transform: uppercase;
   }
 }
 
@@ -158,34 +144,31 @@ export default{
     padding: 5vh;
     justify-self: center;
   }
-  .movie_info img{
-    display: inline-block;
-    width: 100%;
-    height: 50vh;
-    object-fit: cover;
-    border-radius: 10px;
-  }
   table {
-    direction: rtl;
     margin-top: 20px;
     width: 50%;
     border-collapse: collapse;
     font-size: 12px;
     text-align: right;
   }
-
-  th, td {
-    padding: 5px;
-    border: 1px solid #ddd;
-  }
-
-  th {
-    text-transform: uppercase;
-  }
 }
+
 #title,#login_btn{
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.movie_info img{
+  display: inline-block;
+  width: 100%;
+  height: 50vh;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+th, td {
+  padding: 5px;
+  border: 1px solid #ddd;
 }
 </style>
