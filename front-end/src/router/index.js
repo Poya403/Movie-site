@@ -2,13 +2,17 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Movies from '../views/MoviesView.vue'
 import Home from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import Account from '../views/AccountView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', name: 'LoginView', component: LoginView },
+    { path: '/login',
+      name: 'LoginView',
+      component: LoginView
+    },
     {
-      path : '/home',
+      path : '/',
       name: 'HomeView',
       component: Home
     },
@@ -17,6 +21,11 @@ const router = createRouter({
       name: 'MoviesView',
       component: Movies
     },
+    {
+      path: '/account/:id',
+      name: 'AccountView',
+      component : Account
+    }
   ],
 })
 

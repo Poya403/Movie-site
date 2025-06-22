@@ -49,3 +49,7 @@ button{
   cursor: pointer;
   justify-self: end;
 }
+
+.material-icons {
+  vertical-align: middle;
+}

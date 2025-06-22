@@ -4,6 +4,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default {
+  name: 'HomeView',
   setup() {
     const movies = ref([]);
     const genres = ref([]);
@@ -34,12 +35,16 @@ export default {
     const goToMovie = (movieId) => {
       router.push(`/movies/${movieId}`);
     };
+    const goToUsers = (userId) => {
+      router.push(`/account/${userId}`);
+    };
     const logout = () => {
       localStorage.removeItem('username');
-      router.push('/');
+      // this.$router.go(0);
+      window.location.reload();
     };
     onMounted(() => {
-      username.value = localStorage.getItem('username') || 'کاربر';
+      username.value = localStorage.getItem('username') || null;
       fetchMovies();
     });
 
@@ -50,6 +55,7 @@ export default {
       searchTerm,
       searchInputHandler,
       goToMovie,
+      goToUsers,
       username,
       logout
     };
@@ -62,18 +68,18 @@ export default {
     <h1 id="title">فیلم برتر</h1>
     <input id="search" v-model="searchTerm" @input="searchInputHandler" placeholder="جستجوی فیلم">
     <section id="Registration status">
-        <div v-show="!username">
-          <router-link to="/">
-            <button>ورود <i class="material-icons">login</i></button>
-          </router-link>
-        </div>
         <div v-show="username" class="profile-box">
           <h1 class="profile-name">{{ username }}
-          <i class="material-icons">account_circle</i>
+          <i class="material-icons"  @click="goToUsers(username)">account_circle</i>
           </h1>
-          <button type="button" @click="logout">
+          <button id="logout_btn" type="button" @click="logout">
             <i class="material-icons">logout</i>
-        </button>
+          </button>
+        </div>
+        <div v-show="!username">
+          <router-link to="/login">
+            <button>ورود <i class="material-icons">login</i></button>
+          </router-link>
         </div>
     </section>
   </nav><br><br>
@@ -108,9 +114,9 @@ export default {
 }
 
 .movie-card {
-  background-color: #111;
+  background: linear-gradient(black,gray,180deg);
   width: 250px;
-  padding: 20px;
+  padding: 10px;
   border-radius: 12px;
   text-align: center;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
@@ -142,7 +148,7 @@ input{
   border-radius: 5px;
 }
 
-#title,#search{
+#title{
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -150,39 +156,19 @@ input{
     float: right;
 }
 
-#search{
-    margin: 5px 50px 0;
+#search {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  margin: 0 1rem;
+  flex: 1;
+  max-width: 300px;
 }
 
-.profile-box {
-  direction: ltr;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(90deg, #1e1f22, #2d2e33);
-  color: #f0f0f0;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.profile-name {
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
-  text-shadow: 0 0 3px #00000044;
-}
-
-.profile-box .material-icons {
-  font-size: 28px;
-  cursor: pointer;
-  transition: transform 0.2s ease, color 0.3s;
-}
-
-.profile-box .material-icons:hover {
-  transform: scale(1.1);
-  color: #66ccff;
+#search::placeholder {
+  color: #cccccce6;
 }
 
 </style>

@@ -30,8 +30,8 @@ export default {
         });
 
         if (res.data.message === "successfully login!" || res.data.message === "successfully registered!") {
-          localStorage.setItem("username", this.uname);
-          this.$router.push('/home');
+          localStorage.setItem("username",this.uname);
+          this.$router.push('/');
         }
 
       } catch (error) {
@@ -70,8 +70,8 @@ export default {
   margin-bottom: 100px ;
 }
 .login_form{
-  background-color: rgb(75, 75, 75);
   position: absolute;
+  border: 1px solid gray;
   border-radius: 10px;
   text-align: center;
   top:50%;
@@ -83,20 +83,20 @@ export default {
 
 #user_name,#password,#password2{
   width: 80%;
-  padding: 7px;
-  border: none;
+  padding: 10px;
+  border: 1px solid gray;
   margin: 15px auto;
 }
-#password,#password2{ direction: ltr;}
 
 #login_title{
-  margin: 10px;
+  margin-bottom: 20px;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
 }
 
 #enter{
+  margin: 40px 0 20px 0;
   position: relative;
   left: 50%;
   transform: translateX(-50%);

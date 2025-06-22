@@ -2,14 +2,15 @@
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-
+import { useRouter } from 'vue-router';
 
 export default{
     setup(){
       const route = useRoute();
       const movieInfo = ref([]);
       const cast = ref([]);
-
+      const username = ref(null);
+      const router = useRouter();
       const fetchMovieِData = async () => {
       try {
         const movieId = route.params.id;
@@ -23,12 +24,20 @@ export default{
     };
 
     onMounted(() => {
+      username.value = localStorage.getItem('username') || 'کاربر';
       fetchMovieِData();
     });
 
+    const logout = () => {
+      localStorage.removeItem('username');
+      router.push('/');
+    };
+
     return {
       movieInfo,
-      cast
+      cast,
+      username,
+      logout
     };
 
     }
@@ -38,9 +47,21 @@ export default{
 <template>
   <nav>
     <h1 id="title">فیلم برتر</h1>
-    <router-link to="/">
-      <button id="login_btn">ورود <i class="material-icons">login</i></button>
-    </router-link>
+    <section id="Registration status">
+        <div v-show="!username">
+          <router-link to="/">
+            <button>ورود <i class="material-icons">login</i></button>
+          </router-link>
+        </div>
+        <div v-show="username" class="profile-box">
+          <h1 class="profile-name">{{ username }}
+          <i class="material-icons">account_circle</i>
+          </h1>
+          <button id="logout_btn" type="button" @click="logout">
+            <i class="material-icons">logout</i>
+          </button>
+       </div>
+    </section>
   </nav><br>
   <div class="movie_info">
     <img :src="movieInfo.img_url" alt="movie poster" />
@@ -74,7 +95,6 @@ export default{
 }
 @media (max-width: 600px) {
   .movie_info{
-    background-color: black;
     text-align: right;
     padding: 5vh;
   }
@@ -110,7 +130,6 @@ export default{
 @media (min-width: 610px) {
   .movie_info{
     display: block;
-    background-color: black;
     text-align: right;
     width: 100vh;
     height: auto;

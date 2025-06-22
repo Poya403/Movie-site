@@ -121,7 +121,49 @@ app.post('/login', async (req, res) => {
   });
 });
 
+app.get('/account/:id', (req, res) => {
+  const userId = req.params.id;
+  const query = `SELECT * FROM users WHERE uid = ?`;
 
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "خطا در دریافت اطلاعات کاربر" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ message: "کاربر پیدا نشد" });
+    }
+    res.json(results[0]);
+  });
+});
+
+// app.get('/movies/:id', (req, res) => {
+//   const movieId = req.params.id;
+
+//   const movieQuery = `
+
+//   db.query(movieQuery, [movieId], (err, movieResults) => {
+//     if (err) {
+//       console.error("Query error:", err);
+//       return res.status(500).json({ error: err });
+//     }
+//     if (movieResults.length === 0) {
+//       return res.status(404).json({ message: "Movie not found" });
+//     }
+
+//     db.query(castQuery, [movieId], (err, castResults) => {
+//       if (err) {
+//         console.error("Query error:", err);
+//         return res.status(500).json({ error: err });
+//       }
+
+//       res.json({
+//         movieInfo: movieResults[0],
+//         cast: castResults
+//       });
+//     });
+//   });
+// });
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });
