@@ -38,7 +38,6 @@ app.get('/movies', (req, res) => {
       console.error('Query error:', err);
       return res.status(500).json({ error: err });
     }
-    console.log('Results:', results);
 
     const movies = results[0];
     const genres = results[1];
@@ -103,7 +102,7 @@ app.post('/register', async (req, res) => {
       console.error("خطا در ثبت‌نام:", err);
       return res.status(500).json({ error: err });
     }
-    res.json({ message: "successfully registered!", uid: result.insertId });
+    res.json({ message: "successfully registered!", id: result.insertId });
   });
 });
 
@@ -117,7 +116,7 @@ app.post('/login', async (req, res) => {
 
     if (password !== user.password) { return res.status(401).json({ message: "رمز عبور اشتباه است" });}
 
-    res.json({ message: "successfully login!" });
+    res.json({ message: "successfully login!", id: user.uid});
   });
 });
 
@@ -137,33 +136,6 @@ app.get('/account/:id', (req, res) => {
   });
 });
 
-// app.get('/movies/:id', (req, res) => {
-//   const movieId = req.params.id;
-
-//   const movieQuery = `
-
-//   db.query(movieQuery, [movieId], (err, movieResults) => {
-//     if (err) {
-//       console.error("Query error:", err);
-//       return res.status(500).json({ error: err });
-//     }
-//     if (movieResults.length === 0) {
-//       return res.status(404).json({ message: "Movie not found" });
-//     }
-
-//     db.query(castQuery, [movieId], (err, castResults) => {
-//       if (err) {
-//         console.error("Query error:", err);
-//         return res.status(500).json({ error: err });
-//       }
-
-//       res.json({
-//         movieInfo: movieResults[0],
-//         cast: castResults
-//       });
-//     });
-//   });
-// });
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });

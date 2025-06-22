@@ -5,7 +5,7 @@
 
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 .profile-box {
-  background: linear-gradient(blueviolet,blue,45deg);
+  background: linear-gradient(90deg,rgb(29, 4, 140),rgb(75, 8, 122));
   direction: ltr;
   display: flex;
   justify-content: space-between;
@@ -21,7 +21,7 @@
   font-size: 1.2rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
   font-weight: 500;
   text-shadow: 0 0 3px #00000044;
 }
@@ -38,7 +38,7 @@
 }
 
 nav{
-  background-color: #00000044;
+  background: linear-gradient(90deg,rgb(29, 4, 140),rgb(75, 8, 122));
   color: #fff;
   padding: 1rem 2rem;
   display: flex;
@@ -51,9 +51,5 @@ nav{
 
 #logout_btn{
   background-color: transparent;
-}
-
-.light-theme{
-  color: black;
 }
 </style>

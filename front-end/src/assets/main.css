@@ -43,13 +43,17 @@ button{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: white;
   background-color: blueviolet;
-  border-radius: 5px;
+  border-radius: 10px;
   border: none;
+  gap: 10px;
   padding: 10px 16px;
   cursor: pointer;
   justify-self: end;
 }
 
+button:hover{
+  opacity: 0.7;
+}
 .material-icons {
   vertical-align: middle;
 }

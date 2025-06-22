@@ -30,7 +30,7 @@ export default {
         });
 
         if (res.data.message === "successfully login!" || res.data.message === "successfully registered!") {
-          localStorage.setItem("username",this.uname);
+          localStorage.setItem('userInfo',JSON.stringify({ id: res.data.id , name : this.uname }));
           this.$router.push('/');
         }
 

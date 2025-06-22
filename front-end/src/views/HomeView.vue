@@ -10,7 +10,7 @@ export default {
     const genres = ref([]);
     const searchResults = ref([]);
     const searchTerm = ref(null);
-    const username = ref(null);
+    const userInfo = ref({ id: null, name: null });
     const router = useRouter();
     const fetchMovies = async () => {
       try {
@@ -39,12 +39,14 @@ export default {
       router.push(`/account/${userId}`);
     };
     const logout = () => {
-      localStorage.removeItem('username');
+      localStorage.removeItem('userInfo');
       // this.$router.go(0);
       window.location.reload();
     };
     onMounted(() => {
-      username.value = localStorage.getItem('username') || null;
+      const stored = JSON.parse(localStorage.getItem('userInfo')) || {};
+      userInfo.value.id = stored.id || null;
+      userInfo.value.name = stored.name || null;
       fetchMovies();
     });
 
@@ -56,7 +58,7 @@ export default {
       searchInputHandler,
       goToMovie,
       goToUsers,
-      username,
+      userInfo,
       logout
     };
   }
@@ -68,15 +70,15 @@ export default {
     <h1 id="title">فیلم برتر</h1>
     <input id="search" v-model="searchTerm" @input="searchInputHandler" placeholder="جستجوی فیلم">
     <section id="Registration status">
-        <div v-show="username" class="profile-box">
-          <h1 class="profile-name">{{ username }}
-          <i class="material-icons"  @click="goToUsers(username)">account_circle</i>
+        <div v-show="userInfo.name" class="profile-box">
+          <h1 class="profile-name">{{ userInfo.name }}
+          <i class="material-icons"  @click="goToUsers(userInfo.id)">account_circle</i>
           </h1>
           <button id="logout_btn" type="button" @click="logout">
             <i class="material-icons">logout</i>
           </button>
         </div>
-        <div v-show="!username">
+        <div v-show="!userInfo.name">
           <router-link to="/login">
             <button>ورود <i class="material-icons">login</i></button>
           </router-link>
@@ -114,7 +116,7 @@ export default {
 }
 
 .movie-card {
-  background: linear-gradient(black,gray,180deg);
+  background: linear-gradient(90deg,rgb(29, 4, 140),rgb(75, 8, 122));
   width: 250px;
   padding: 10px;
   border-radius: 12px;
