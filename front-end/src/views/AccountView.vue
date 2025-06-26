@@ -30,9 +30,14 @@ export default{
       router.push('/login');
     };
 
+    const GotoEdit = (userId) => {
+      router.push(`/accountEdit/${userId}`);
+    };
+
     return{
       users,
-      logout
+      logout,
+      GotoEdit
     };
   },
 
@@ -48,11 +53,10 @@ export default{
     <section class="details">
       <h2 id="bio">بیوگرافی: {{ users.bio ?? 'empty' }}</h2>
       <h3>تاریخ و زمان ثبت‌نام: {{ new Date(users.registration_date).toLocaleString('fa-IR') }}</h3>
-      <h3>رمز: {{ users.password }}</h3>
     </section>
 
     <section class="actions">
-      <button id="Edit" type="button">
+      <button id="Edit" type="button" @click="GotoEdit(users.uid)">
         <i class="material-icons">edit</i>
         <span>ویرایش اطلاعات</span>
       </button>

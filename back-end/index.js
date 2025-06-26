@@ -136,6 +136,59 @@ app.get('/account/:id', (req, res) => {
   });
 });
 
+app.get('/accountEdit/:id', (req, res) => {
+  const userId = req.params.id;
+  const query = `SELECT * FROM users WHERE uid = ?`;
+
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ error: "خطا در دریافت اطلاعات کاربر" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ message: "کاربر پیدا نشد" });
+    }
+    res.json(results[0]);
+  });
+});
+
+app.put('/accountEdit/:id', (req, res) => {
+  const userId = req.params.id;
+  const { uname, bio, isChangingPassword, curr_password, new_password } = req.body;
+
+  const selectQuery = `SELECT password FROM users WHERE uid = ?`;
+  db.query(selectQuery, [userId], (err, results) => {
+    if (err || results.length === 0) {
+      return res.status(500).json({ message: "کاربر یافت نشد یا خطای دیتابیس" });
+    }
+
+    const currentPasswordInDb = results[0].password;
+
+    if (isChangingPassword) {
+      if (curr_password !== currentPasswordInDb) {
+        return res.status(401).json({ message: "رمز عبور فعلی اشتباه است" });
+      }
+      const updateQuery = `UPDATE users SET uname = ?, bio = ?, password = ? WHERE uid = ?`;
+      db.query(updateQuery, [uname, bio, new_password, userId], (err) => {
+        if (err) {
+          console.error("Update error:", err);
+          return res.status(500).json({ message: "خطا در به‌روزرسانی اطلاعات" });
+        }
+        res.json({ message: "اطلاعات با موفقیت ویرایش شد" });
+      });
+    } else {
+      const updateQuery = `UPDATE users SET uname = ?, bio = ? WHERE uid = ?`;
+      db.query(updateQuery, [uname, bio, userId], (err) => {
+        if (err) {
+          console.error("Update error:", err);
+          return res.status(500).json({ message: "خطا در به‌روزرسانی اطلاعات" });
+        }
+        res.json({ message: "اطلاعات با موفقیت ویرایش شد" });
+      });
+    }
+  });
+});
+
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });

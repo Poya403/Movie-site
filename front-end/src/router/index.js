@@ -3,6 +3,7 @@ import Movies from '../views/MoviesView.vue'
 import Home from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import Account from '../views/AccountView.vue'
+import AccountEdit from '../views/AccountEdit.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -25,6 +26,11 @@ const router = createRouter({
       path: '/account/:id',
       name: 'AccountView',
       component : Account
+    },
+    {
+      path: '/accountEdit/:id',
+      name: 'AccountEdit',
+      component : AccountEdit
     }
   ],
 })
