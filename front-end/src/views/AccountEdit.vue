@@ -41,7 +41,6 @@ export default{
           curr_password: curr_password.value,
           new_password: new_password.value,
         });
-        alert('تغییرات با موفقیت ذخیره شد!');
         router.back();
       } catch (err) {
         console.error('خطا در به‌روزرسانی کاربر:', err);
@@ -49,11 +48,11 @@ export default{
       }
     };
     const goback = () => {
+      if(isChangingPassword.value){ isChangingPassword.value=false; return;}
       router.back();
     }
     const change_password_btn_handler = () => {
-      if(isChangingPassword.value) isChangingPassword.value=false;
-      else isChangingPassword.value = true;
+      isChangingPassword.value = true;
     }
     onMounted(()=>{
       fetchUserData();
@@ -79,14 +78,17 @@ export default{
 <template>
   <div class="main_div">
     <form>
-      <label id="name_lbl" type="name" for="name">نام کاربری:</label>
-      <input id="name" type="text" placeholder="نام کاربری جدید را وارد کنید" v-model="userName">
+      <section id = "Change_info field" v-if="!isChangingPassword">
+        <label id="name_lbl" type="name" for="name">نام کاربری:</label>
+        <input id="name" type="text" placeholder="نام کاربری جدید را وارد کنید" v-model="userName">
 
-      <label id="bio_lbl" type="text" for="bio">بیوگرافی</label><br>
-      <textarea id="bio" type="text" rows="7" placeholder="عنوان جدید بیوگرافی را وارد کنید" v-model="bio"></textarea>
-      <button id="change_password_btn" type="button" @click="change_password_btn_handler()">
-        {{ !isChangingPassword ? "تغییر رمز" : "انصراف از تغییر رمز" }}
-      </button>
+        <label id="bio_lbl" type="text" for="bio">بیوگرافی</label><br>
+        <textarea id="bio" type="text" rows="7" placeholder="عنوان جدید بیوگرافی را وارد کنید" v-model="bio"></textarea>
+        <button id="change_password_btn" type="button" @click="change_password_btn_handler()">
+          تغییر رمز
+        </button>
+      </section>
+
 
       <section id = "Change_password field" v-if="isChangingPassword">
 
