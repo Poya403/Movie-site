@@ -70,6 +70,11 @@ app.get('/movies/:id', (req, res) => {
     WHERE mc.mid = ?;
   `;
 
+  const CommentsQuery = `select * from ratings_comments
+    join users on users.uid = ratings_comments.uid
+    where ratings_comments.mid = ?;
+  `;
+
   db.query(movieQuery, [movieId], (err, movieResults) => {
     if (err) {
       console.error("Query error:", err);
@@ -80,6 +85,12 @@ app.get('/movies/:id', (req, res) => {
     }
 
     db.query(castQuery, [movieId], (err, castResults) => {
+    if (err) {
+      console.error("Query error:", err);
+      return res.status(500).json({ error: err });
+    }
+
+    db.query(CommentsQuery, [movieId], (err, commentsResults) => {
       if (err) {
         console.error("Query error:", err);
         return res.status(500).json({ error: err });
@@ -87,9 +98,74 @@ app.get('/movies/:id', (req, res) => {
 
       res.json({
         movieInfo: movieResults[0],
-        cast: castResults
+        cast: castResults,
+        comments: commentsResults
+      });
       });
     });
+  });
+});
+
+app.put('/movies/:id', async (req, res) => {
+  const { uid, rate, comment_text } = req.body;
+  const movieId = req.params.id;
+
+  const checkQuery = `
+    SELECT rid FROM ratings_comments
+    WHERE uid = ? AND mid = ?
+  `;
+
+  db.query(checkQuery, [uid, movieId], (checkErr, checkResult) => {
+    if (checkErr) {
+      console.error('خطا در بررسی کامنت قبلی:', checkErr);
+      return res.status(500).json({ error: 'خطا در بررسی کامنت قبلی' });
+    }
+
+    if (checkResult.length > 0) {
+      const updateQuery = `
+        UPDATE ratings_comments
+        SET rate = ?, comment_text = ?
+        WHERE uid = ? AND mid = ?
+      `;
+      db.query(updateQuery, [rate, comment_text, uid, movieId], (updateErr) => {
+        if (updateErr) {
+          console.error('خطا در ویرایش کامنت:', updateErr);
+          return res.status(500).json({ error: 'خطا در ویرایش کامنت' });
+        }
+        res.json({ message: 'کامنت با موفقیت ویرایش شد' });
+      });
+    } else {
+      const insertQuery = `
+        INSERT INTO ratings_comments (uid, mid, rate, comment_text, date_created)
+        VALUES (?, ?, ?, ?, NOW())
+      `;
+      db.query(insertQuery, [uid, movieId, rate, comment_text], (insertErr, insertResult) => {
+        if (insertErr) {
+          console.error('خطا در ذخیره کامنت:', insertErr);
+          return res.status(500).json({ error: 'خطا در ذخیره کامنت' });
+        }
+        res.json({ message: 'کامنت با موفقیت ذخیره شد', rid: insertResult.insertId });
+      });
+    }
+  });
+});
+
+app.delete('/comments/:id', (req, res) => {
+  const commentId = req.params.id;
+
+  const query = `DELETE FROM ratings_comments WHERE rid = ?`;
+
+  db.query(query, [commentId], (err, result) => {
+    if (err) {
+      console.error('خطا در حذف کامنت:', err);
+      return res.status(500).json({ error: 'حذف کامنت با خطا مواجه شد' });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'کامنتی برای حذف پیدا نشد' });
+    }
+
+    res.json({ message: 'کامنت با موفقیت حذف شد' });
   });
 });
 
