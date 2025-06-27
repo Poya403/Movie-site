@@ -28,6 +28,7 @@ export default{
         }
       };
       const updateCommentsTable = async () => {
+        if(!userInfo.value.id) {alert("لطفا ابتدا وارد حساب کاربری شود."); return;}
         try {
           const movieId = route.params.id;
           await axios.put(`http://localhost:3000/movies/${movieId}`,{
@@ -62,8 +63,8 @@ export default{
     });
 
     const logout = () => {
-      localStorage.removeItem('username');
-      router.push('/');
+      localStorage.removeItem('userInfo');
+      window.location.reload();
     };
 
     const goToUsers = (userId) => {
