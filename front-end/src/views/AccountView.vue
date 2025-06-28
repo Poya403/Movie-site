@@ -9,7 +9,7 @@ export default{
   setup(){
     const route = useRoute();
     const users = ref({});
-
+    const userInfo = ref({ id: null, name: null });
     const fetchUserData = async () => {
       try {
         const userId = route.params.id;
@@ -22,6 +22,10 @@ export default{
     };
 
     onMounted(() => {
+      //نمایش اطلاعات کاربری که الان وارد سایت شده
+      const stored = JSON.parse(localStorage.getItem('userInfo')) || {};
+      userInfo.value.id = stored.id || null;
+      userInfo.value.name = stored.name || null;
       fetchUserData();
     });
 
@@ -36,6 +40,7 @@ export default{
 
     return{
       users,
+      userInfo,
       logout,
       GotoEdit
     };
@@ -55,7 +60,7 @@ export default{
       <h3>تاریخ و زمان ثبت‌نام: {{ new Date(users.registration_date).toLocaleString('fa-IR') }}</h3>
     </section>
 
-    <section class="actions">
+    <section class="actions" v-if="users.uid === userInfo.id">
       <button id="Edit" type="button" @click="GotoEdit(users.uid)">
         <i class="material-icons">edit</i>
         <span>ویرایش اطلاعات</span>

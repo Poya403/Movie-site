@@ -139,7 +139,7 @@ export default{
     <h1 id="comment_title">نظرات</h1>
     <div class="comment" v-for="comment in comments" :key="comment.rid">
       <div class="comment-header">
-        <i class="material-icons avatar">account_circle</i>
+        <i class="material-icons avatar" @click="goToUsers(comment.uid)">account_circle</i>
         <div class="user-info">
           <p class="uname">{{ comment.uname }}</p>
           <span class="date">{{ new Date(comment.date_created).toLocaleString('fa-IR') }}</span>
@@ -342,6 +342,12 @@ textarea{
   font-size: 2rem;
   color:blueviolet;
   margin-left: 0.8rem;
+  cursor: pointer;
+}
+
+.avatar:hover {
+  transform: scale(1.1);
+  color: #66ccff;
 }
 
 .user-info {
