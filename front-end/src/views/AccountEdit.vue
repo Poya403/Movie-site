@@ -41,6 +41,7 @@ export default{
           curr_password: curr_password.value,
           new_password: new_password.value,
         });
+        localStorage.setItem('userInfo',JSON.stringify({ id: userId , name : userName.value }));
         router.back();
       } catch (err) {
         console.error('خطا در به‌روزرسانی کاربر:', err);

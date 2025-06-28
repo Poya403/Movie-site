@@ -22,7 +22,7 @@ export default{
     };
 
     onMounted(() => {
-      //نمایش اطلاعات کاربری که الان وارد سایت شده
+      // ذخیره کردن اطلاعات کاربری که الان وارد سایت شده
       const stored = JSON.parse(localStorage.getItem('userInfo')) || {};
       userInfo.value.id = stored.id || null;
       userInfo.value.name = stored.name || null;
@@ -60,7 +60,7 @@ export default{
       <h3>تاریخ و زمان ثبت‌نام: {{ new Date(users.registration_date).toLocaleString('fa-IR') }}</h3>
     </section>
 
-    <section class="actions" v-if="users.uid === userInfo.id">
+    <section class="actions" v-if="users.uid == userInfo.id">
       <button id="Edit" type="button" @click="GotoEdit(users.uid)">
         <i class="material-icons">edit</i>
         <span>ویرایش اطلاعات</span>
