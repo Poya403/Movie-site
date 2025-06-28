@@ -148,6 +148,7 @@ export default{
             <i class="material-icons">delete</i>
         </button>
       </div>
+      <div v-if="comments.length === 0">نظری ثبت نشده است.</div>
       <i v-for="i in 5" :key="i" class="material-icons rate">{{ i <= comment.rate ? 'star' : 'star_border' }}</i>
         <p class="comment-text">{{ comment.comment_text }}</p>
     </div>

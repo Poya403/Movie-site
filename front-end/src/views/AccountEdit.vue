@@ -109,7 +109,7 @@ export default{
         </div>
 
 
-        <label id="rep_password_lbl" for="rep_password">تکرار رمز عبور :</label>
+        <label id="rep_password_lbl" for="rep_password">تکرار رمز عبور جدید:</label>
         <div class="password_field">
           <input id="rep_password" :type="showRep ? 'text' : 'password'" v-model="rep_password"
             placeholder="لطفا  مجددا رمز عبور جدید را وارد کنید.">
